@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPOTBOOK</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional CSS for the layout */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        nav {
+            margin-left: auto;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Left corner image logo -->
+        <div class="logo">
+            <img src="img.jpg" alt="Logo">
+            <h1>SPOTBOOK</h1>
+        </div>
+        <!-- Right corner navigation buttons -->
+        <nav>
+            <a href="signup.html">Sign Up</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
+    <main>
+        <div class="ongoing-events">
+            <h2>Ongoing Events</h2>
+            <div class="event-list" id="eventsContainer"></div>
+        </div>
+        <div class="create-event">
+            <a href="create_event.html" class="button">Create Event</a>
+        </div>
+        <footer>
+            <div>Contact Us: example@example.com</div>
+        </footer>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

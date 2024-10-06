@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles to ensure proper layout */
+        .create-event-container {
+            max-width: 500px; /* Increased maximum width for better alignment */
+            margin: auto; /* Center the container */
+            padding: 30px; /* Add more padding */
+            border: 1px solid #ddd; /* Optional border */
+            border-radius: 8px; /* Optional rounded corners */
+            background-color: #f9f9f9; /* Optional background color */
+        }
+
+        /* Make input fields take full width with better spacing */
+        label {
+            margin-top: 20px; /* Add margin above labels */
+            display: block; /* Ensure labels take full width */
+            font-weight: bold; /* Bold labels for emphasis */
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        input[type="submit"],
+        select {
+            width: 100%;
+            padding: 12px; /* Increased padding for input fields */
+            margin-top: 10px; /* Space between label and input */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px; /* Increased font size for better readability */
+        }
+
+        input[type="submit"] {
+            margin-top: 30px; /* Additional space above the submit button */
+            background-color: #28a745; /* Button color */
+            color: white; /* Text color */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s; /* Transition effect for hover */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838; /* Darker shade on hover */
+        }
+
+        .rupee-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .rupee-symbol span {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .rupee-symbol input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="create-event-container">
+        <h1>Create Event</h1>
+        <form id="eventForm">
+            <label for="name">Event Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="description">Description:</label>
+            <input type="text" id="description" required>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" required>
+
+            <label for="time">Time:</label>
+            <input type="time" id="time" required>
+
+            <label for="venue">Venue:</label>
+            <input type="text" id="venue" required>
+
+            <label for="type">Type of Event:</label>
+            <select id="type" required>  <!-- Added type of event dropdown -->
+                <option value="">Select Event Type</option>
+                <option value="workshop">Workshop</option>
+                <option value="concert">Concert</option>
+                <option value="seminar">Seminar</option>
+                <option value="webinar">Webinar</option>
+                <option value="theater">Theater</option>
+                <option value="exhibition">Exhibition</option>
+                <option value="conference">Conference</option>
+            </select>
+
+            <label for="price">Ticket Price:</label>
+            <div class="rupee-symbol">
+                <span>₹</span>  <!-- Added rupee symbol here -->
+                <input type="number" id="price" required min="0" step="0.01">
+            </div>
+
+            <label for="seats">Number of Seats:</label>
+            <input type="number" id="seats" required min="1">
+
+            <input type="submit" value="Create Event">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('eventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const venue = document.getElementById('venue').value;
+            const type = document.getElementById('type').value;  // Get type of event
+            const price = document.getElementById('price').value;  // Get ticket price
+            const seats = document.getElementById('seats').value;  // Get number of seats
+
+            const event = { name, description, date, time, venue, type, price, seats };  // Include type in event object
+
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            events.push(event);
+            localStorage.setItem('events', JSON.stringify(events));
+
+            alert("Event created successfully!");
+            window.location.href = 'index.html'; // Redirect to main page
+        });
+    </script>
+</body>
+</html>

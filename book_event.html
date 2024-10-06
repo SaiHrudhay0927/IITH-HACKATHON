@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Event</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .seat-selection {
+            margin: 20px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: auto;
+            width: 250px;
+        }
+
+        .seat {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .available {
+            background-color: #1ea83c;
+            color: white;
+        }
+
+        .selected {
+            background-color: #ff6f61;
+            color: white;
+        }
+
+        .blocked {
+            background-color: #e3e3e3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <h1>Book Event</h1>
+        <div id="eventDetails"></div>
+
+        <div class="seat-selection">
+            <h2>Select Your Seats</h2>
+            <div class="grid" id="seatGrid"></div>
+        </div>
+        
+        <button onclick="confirmBooking()" class="button">Confirm Booking</button>
+    </div>
+
+    <script>
+        const selectedIndex = localStorage.getItem('selectedEventIndex');
+        const selectedSeatsKey = `selectedSeats_${selectedIndex}`;
+        const bookedSeatsKey = `bookedSeats_${selectedIndex}`;
+
+        const selectedSeats = new Set(JSON.parse(localStorage.getItem(selectedSeatsKey)) || []);
+        const bookedSeats = new Set(JSON.parse(localStorage.getItem(bookedSeatsKey)) || []);
+
+        function displayEventDetails() {
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            const event = events[selectedIndex];
+
+            if (event) {
+                const eventDetails = `
+                    <h2>${event.name}</h2>
+                    <p>${event.description}</p>
+                    <p>${event.date} at ${event.time}</p>
+                    <p>Venue: ${event.venue}</p>
+                    <p>Ticket Price: ₹${event.price}</p>
+                    <p>Available Seats: ${event.seats}</p>
+                `;
+                document.getElementById('eventDetails').innerHTML = eventDetails;
+
+                generateSeatLayout(event.seats);
+            }
+        }
+
+        function generateSeatLayout(totalSeats) {
+            const seatGrid = document.getElementById('seatGrid');
+            seatGrid.innerHTML = "";
+            for (let i = 0; i < totalSeats; i++) {
+                const seat = document.createElement('div');
+                seat.className = 'seat ' + (bookedSeats.has(i + 1) ? 'blocked' : selectedSeats.has(i + 1) ? 'selected' : 'available');
+                seat.innerText = i + 1;
+                seat.onclick = function() {
+                    if (!bookedSeats.has(i + 1)) {
+                        toggleSeatSelection(seat, i + 1);
+                    }
+                };
+                seatGrid.appendChild(seat);
+            }
+        }
+
+        function toggleSeatSelection(seat, seatNumber) {
+            if (selectedSeats.has(seatNumber)) {
+                selectedSeats.delete(seatNumber);
+                seat.classList.remove('selected');
+                seat.classList.add('available');
+            } else {
+                selectedSeats.add(seatNumber);
+                seat.classList.add('selected');
+                seat.classList.remove('available');
+            }
+            localStorage.setItem(selectedSeatsKey, JSON.stringify(Array.from(selectedSeats)));
+        }
+
+        function confirmBooking() {
+            if (selectedSeats.size > 0) {
+                const events = JSON.parse(localStorage.getItem('events')) || [];
+                const event = events[selectedIndex];
+                const totalAmount = event.price * selectedSeats.size;
+
+                selectedSeats.forEach(seat => {
+                    bookedSeats.add(seat);
+                });
+
+                localStorage.setItem(bookedSeatsKey, JSON.stringify(Array.from(bookedSeats)));
+
+                // Redirect to the payment page with the payment amount
+                window.location.href = `payment-page.html?amount=${totalAmount}`;
+
+                localStorage.removeItem(selectedSeatsKey);
+            } else {
+                alert('Please select at least one seat.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', displayEventDetails);
+    </script>
+</body>
+</html>

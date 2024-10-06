@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .payment-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .payment-container h2 {
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin: 10px 0;
+            text-align: left;
+            width: 100%;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .qr-code-container {
+            display: flex;
+            justify-content: center; /* Center the QR code image */
+            align-items: center;
+            margin-top: 20px;
+        }
+        .qr-code {
+            width: 256px; /* Enlarged width of the QR code image */
+            height: 256px; /* Enlarged height of the QR code image */
+            margin-left: 20px; /* Space between input fields and image */
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-container">
+    <h2>Payment Confirmation</h2>
+    <p>Please enter your details below:</p>
+
+    <div class="input-group">
+        <label for="userName">Name:</label>
+        <input type="text" id="userName" placeholder="Enter your name" required>
+    </div>
+    <div class="input-group">
+        <label for="userEmail">Email:</label>
+        <input type="email" id="userEmail" placeholder="Enter your email" required>
+    </div>
+
+    <p>Your payment amount is: ₹<span id="paymentAmount"></span></p>
+    
+    <div class="qr-code-container">
+        <img src="Payment-qr.jpg" alt="QR Code" class="qr-code" /> <!-- Replace with your QR code image link -->
+    </div>
+
+    <button class="button" onclick="goHome()">Go to Home</button>
+</div>
+
+<script>
+    function getPaymentAmount() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('amount');
+    }
+
+    document.getElementById('paymentAmount').innerText = getPaymentAmount();
+
+    function goHome() {
+        window.location.href = 'index.html'; // Redirect to your home page
+    }
+</script>
+
+</body>
+</html>
